@@ -1,4 +1,5 @@
 #include "types.h"
+#include "condvar.h"
 #include "x86.h"
 #include "defs.h"
 #include "date.h"
@@ -6,6 +7,9 @@
 #include "memlayout.h"
 #include "mmu.h"
 #include "proc.h"
+struct spinlock lk;
+struct condvar cv;
+
 
 int
 sys_fork(void)
@@ -88,4 +92,34 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+int sys_init_cv(void)
+{
+  cv.lk = &lk;
+  return 0;
+}
+
+int sys_cv_broadcast(void)
+{
+  wakeup(&cv);
+  return 0;
+}
+
+int sys_cv_wait(void)
+{
+  sleep1(&cv, cv.lk); 
+  return 0;
+}
+
+void sys_init_lock() { 
+  lk.locked = 0;
+}
+
+void sys_lock() {
+  while(xchg(&lk.locked, 1) != 0)
+    ;
+}
+
+void sys_unlock() { 
+  xchg(&lk.locked, 0);
 }

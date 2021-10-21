@@ -23,6 +23,13 @@ int getpid(void);
 char* sbrk(int);
 int sleep(int);
 int uptime(void);
+int init_cv(void);
+int cv_wait(void); 
+int cv_broadcast(void);
+int init_lock(void);
+int lock(void);
+int unlock(void);
+
 
 // ulib.c
 int stat(const char*, struct stat*);

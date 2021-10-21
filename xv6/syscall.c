@@ -103,6 +103,13 @@ extern int sys_unlink(void);
 extern int sys_wait(void);
 extern int sys_write(void);
 extern int sys_uptime(void);
+extern int sys_init_cv(void);
+extern int sys_cv_broadcast(void);
+extern int sys_cv_wait(void);
+extern int sys_init_lock(void);
+extern int sys_lock(void);
+extern int sys_unlock(void);
+
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -126,6 +133,12 @@ static int (*syscalls[])(void) = {
 [SYS_link]    sys_link,
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
+[SYS_init_cv] sys_init_cv,
+[SYS_cv_wait] sys_cv_wait, 
+[SYS_cv_broadcast] sys_cv_broadcast,
+[SYS_init_lock] sys_init_lock,
+[SYS_lock] sys_lock,
+[SYS_unlock] sys_unlock,
 };
 
 void
